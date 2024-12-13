@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aether Settings</title>
+  <link href="styles/main.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+  <div class="max-w-2xl mx-auto bg-white rounded-lg shadow p-6">
+    <div class="mb-6">
+      <h1 class="text-2xl font-bold text-gray-800">Settings</h1>
+      <p class="text-gray-600">Configure your Aether experience</p>
+    </div>
+
+    <form id="settingsForm" class="space-y-6">
+      <div>
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">Processing</h2>
+        <div class="space-y-4">
+          <div class="flex items-center">
+            <input type="checkbox" id="autoProcess" class="h-4 w-4 text-blue-600 rounded border-gray-300">
+            <label for="autoProcess" class="ml-2 text-gray-700">
+              Automatically process inbox
+            </label>
+          </div>
+          
+          <div>
+            <label for="updateInterval" class="block text-sm font-medium text-gray-700">
+              Update interval (seconds)
+            </label>
+            <input type="number" id="updateInterval" min="30" max="3600" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t pt-6">
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+          Save Changes
+        </button>
+      </div>
+    </form>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html> 

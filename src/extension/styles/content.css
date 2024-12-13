@@ -1,0 +1,67 @@
+/* Aether button styles */
+.aether-process {
+  display: flex !important;
+  align-items: center;
+  padding: 0 15px !important;
+  min-width: 160px;
+}
+
+.aether-process:hover {
+  background-color: #f1f3f4 !important;
+}
+
+.aether-process.T-I-JW {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Label indicator styles */
+.aether-indicator {
+  font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  transition: opacity 0.2s ease;
+}
+
+.aether-indicator:hover {
+  opacity: 0.8;
+}
+
+/* Notification styles */
+.aether-notification {
+  animation: slideIn 0.3s ease-out;
+  font-family: 'Google Sans', Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+}
+
+.aether-notification.success {
+  background-color: #4CAF50;
+}
+
+.aether-notification.error {
+  background-color: #f44336;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Custom label colors */
+.aether-label-needs-response {
+  background-color: #f44336 !important;
+  color: white !important;
+}
+
+.aether-label-needs-attention {
+  background-color: #ff9800 !important;
+  color: white !important;
+}
+
+.aether-label-can-archive {
+  background-color: #4CAF50 !important;
+  color: white !important;
+} 

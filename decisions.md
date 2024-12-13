@@ -1,65 +1,106 @@
 # Technical Decisions Log
 
-## Authentication & Authorization
-- **Decision**: Use Google OAuth 2.0 for Gmail API authentication
-- **Rationale**: Required by Google APIs, provides secure access to user email data
-- **Date**: [Initial Project Setup]
+## Architecture Decisions
 
-## Backend Framework
-- **Decision**: Node.js with Express.js
-- **Rationale**: 
-  - Excellent ecosystem for API integrations
-  - Strong async/await support for handling multiple API calls
-  - Large community and extensive documentation
-- **Date**: [Initial Project Setup]
+1. Chrome Extension Structure
+   - Using Manifest V3 for future compatibility
+   - Background service worker for API communication
+   - Popup UI for quick actions
+   - Full-page options for detailed settings
+   - Content script for Gmail integration
 
-## Database
-- **Decision**: Firebase Firestore
-- **Rationale**: 
-  - Native integration with Google services
-  - Real-time capabilities
-  - Scalable NoSQL structure suitable for storing user rules and knowledge base
-  - Built-in security features
-- **Date**: [Initial Project Setup]
+2. Frontend Framework
+   - No heavy framework (React/Vue) to keep extension lightweight
+   - Using vanilla JavaScript for better performance
+   - Tailwind CSS for styling (bundled, not CDN)
+   - Webpack for bundling and optimization
 
-## API Integrations
-- **Decision**: Using official client libraries
-  - @googleapis/gmail for Gmail API
-  - @google-cloud/local-auth for authentication
-- **Rationale**: Official libraries provide better maintenance and security updates
-- **Date**: [Initial Project Setup]
+3. Backend Structure
+   - Node.js with Express for API server
+   - Separate service modules for Gmail and Claude
+   - Winston for logging
+   - Custom error handling middleware
 
-## Development Environment
-- **Decision**: Using dotenv for environment variable management
-- **Rationale**: Industry standard for managing environment variables, easy to use
-- **Date**: [Initial Project Setup]
+4. Authentication
+   - Google OAuth 2.0 for Gmail API
+   - Token storage in Chrome extension storage
+   - Automatic token refresh handling
 
-## Project Structure
-- **Decision**: Modular architecture with separate backend services
-- **Rationale**: Allows for better code organization and maintainability
-- **Current Structure**:  ```
-  /
-  ├── src/
-  │   └── backend/
-  │       ├── auth.js
-  │       └── firebase.js
-  ├── package.json
-  ├── server.js  ```
-- **Date**: [Initial Project Setup]
+5. Data Storage
+   - Chrome storage sync for extension settings
+   - Firebase Firestore for knowledge library
+   - Local file system for logs
 
-## Version Control
-- **Decision**: Git with .gitignore configured for sensitive files
-- **Rationale**: Industry standard, necessary for protecting API keys and credentials
-- **Date**: [Initial Project Setup]
+## UI/UX Decisions
 
-## AI Model Selection
-- **Decision**: Using Claude 3.5 Sonnet (claude-3-5-sonnet-20241022)
-- **Rationale**: 
-  - Best balance of performance and cost for email analysis
-  - Strong capabilities in understanding context and generating natural language
-  - Consistent API response format
-  - More reliable at following complex instructions compared to earlier models
-- **Implementation**: 
-  - Stored as CLAUDE_MODEL environment variable
-  - Should be referenced in all API calls to ensure consistency
-- **Date**: [Current Date]
+1. Extension Popup
+   - Compact design (384px width)
+   - Real-time connection status indicator
+   - Statistics dashboard with three categories
+   - Two primary actions: Process Inbox and Generate Drafts
+   - Visual feedback for all actions
+   - Disabled state for offline/error conditions
+
+2. Settings Page
+   - Full-width design for better readability
+   - Separate sections for different settings
+   - Real-time saving
+   - Form validation
+   - Responsive layout
+
+3. Error Handling
+   - Visual feedback for all operations
+   - Clear error messages
+   - Automatic retry for transient failures
+   - Graceful degradation when offline
+
+4. State Management
+   - Centralized state in background worker
+   - Event-based communication between components
+   - Automatic state sync across views
+
+## Development Decisions
+
+1. Build System
+   - Webpack for bundling
+   - Separate bundles for popup and options
+   - CSS extraction for better caching
+   - Source maps for debugging
+   - No code splitting to avoid duplication
+
+2. Testing Strategy
+   - Unit tests for core functionality
+   - Integration tests for API communication
+   - Manual testing for UI interactions
+   - Automated build testing
+
+3. Deployment Strategy
+   - Development builds with source maps
+   - Production builds with minimization
+   - Automated version bumping
+   - Chrome Web Store deployment
+
+## Security Decisions
+
+1. API Communication
+   - HTTPS only
+   - Token-based authentication
+   - Request validation
+   - Rate limiting
+
+2. Data Storage
+   - Encryption for sensitive data
+   - Secure storage for tokens
+   - Regular data cleanup
+
+## Future Considerations
+
+1. Performance Optimization
+   - Lazy loading for options page
+   - Caching for API responses
+   - Background task queuing
+
+2. Scalability
+   - Modular architecture for easy updates
+   - Extensible settings system
+   - Pluggable categorization rules

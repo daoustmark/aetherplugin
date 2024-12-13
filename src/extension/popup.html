@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aether</title>
+  <link href="styles/main.css" rel="stylesheet">
+</head>
+<body class="w-96 h-96 bg-gray-100 p-4">
+  <div class="bg-white rounded-lg shadow p-4">
+    <div class="flex items-center justify-between mb-4">
+      <h1 class="text-xl font-bold text-gray-800">Aether</h1>
+      <div id="connectionStatus" class="flex items-center">
+        <span class="h-2 w-2 rounded-full bg-red-500 mr-2"></span>
+        <span class="text-sm text-gray-600">Disconnected</span>
+      </div>
+    </div>
+
+    <div class="space-y-4">
+      <div class="grid grid-cols-3 gap-4">
+        <div class="bg-blue-50 p-3 rounded-lg">
+          <h3 class="text-sm font-medium text-blue-800">Needs Response</h3>
+          <p id="needsResponse" class="text-2xl font-bold text-blue-600">0</p>
+        </div>
+        <div class="bg-yellow-50 p-3 rounded-lg">
+          <h3 class="text-sm font-medium text-yellow-800">Needs Attention</h3>
+          <p id="needsAttention" class="text-2xl font-bold text-yellow-600">0</p>
+        </div>
+        <div class="bg-green-50 p-3 rounded-lg">
+          <h3 class="text-sm font-medium text-green-800">Archived</h3>
+          <p id="archived" class="text-2xl font-bold text-green-600">0</p>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <button id="processInbox" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+          Process Inbox
+        </button>
+        <button id="generateDrafts" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+          Generate Drafts
+        </button>
+      </div>
+
+      <div class="border-t pt-4">
+        <a href="options.html" target="_blank" class="text-sm text-blue-600 hover:text-blue-800 transition-colors">
+          Settings
+        </a>
+      </div>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html> 
