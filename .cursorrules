@@ -1,0 +1,214 @@
+# Specification Document: Chrome Plugin for Email Categorization and Drafting (Name: Aether)
+
+## Overview
+
+This Chrome plugin (Aether) automates email management for Google Workspace accounts by categorizing emails into three categories: **Needs Response**, **Needs Attention**, and **Can Archive**, and drafting responses for emails labeled as "Needs Response" using the Anthropic Claude API. The plugin incorporates user-defined rules and a knowledge library to enhance accuracy and relevance.
+
+---
+
+## Core Features
+
+### 1. Email Categorization
+
+- **Purpose**: Automatically assign one of three labels to incoming emails.
+- **Labels**:
+  - Needs Response: Emails requiring a reply.
+  - Needs Attention: Emails that don’t require a reply but contain important information.
+  - Can Archive: Non-essential emails that can be archived.
+- **Mechanism**:
+  - Fetch emails using Gmail API.
+  - Send email data (subject, sender, body, and the thread context if applicable) to Anthropic Claude API with a base prompt, user-defined rules, and conversational guidelines such as 'I generally like to see travel deals, so if you see a travel email with a particularly good deal, call it to my attention.'
+  - Apply the appropriate label to each email using Gmail API.
+- **Customizable Rules**:
+  - Allow users to define preferences as conversational guidelines. For example:
+    - 'I generally like to see travel deals, so if you see a travel email with a particularly good deal, call it to my attention.'
+    - 'Always archive emails from [specific sender] unless they mention [specific topic].'
+
+### 2. Draft Response Generation
+
+- **Purpose**: Generate drafts for emails labeled as "Needs Response."
+- **Mechanism**:
+  - Use Anthropic Claude API to draft responses based on:
+    - Email content and the content of the entire thread for context.
+    - Writing style learned from past emails.
+    - Knowledge library (if needed for specific details).
+  - Save the draft directly to Gmail.
+- **Customization**:
+  - Include user preferences (e.g., tone, formal vs. casual language).
+
+### 3. Writing Style Training
+
+- **Purpose**: Ensure drafts match the user’s email writing style.
+- **Mechanism**:
+  - Fetch a sample of past sent emails (up to 10,000) using Gmail API.
+  - Analyze tone, structure, vocabulary, and common patterns.
+  - Generate a style guide to influence future drafts.
+
+### 4. Knowledge Library Integration
+
+- **Purpose**: Provide accurate and context-aware responses for emails requiring specific business knowledge.
+- **Features**:
+  - Allow users to add, edit, and manage knowledge entries.
+  - Use semantic search (via LangChain) to match queries with library content.
+  - Combine relevant library data with email content to create a draft.
+
+### 5. User Interface
+
+- **Purpose**: Enable users to configure settings and manage the knowledge library.
+- **Features**:
+  - Dashboard:
+    - View categorization rules.
+    - Manage preferences (e.g., categorization logic, writing style).
+  - Library Editor:
+    - Add/edit/delete knowledge entries.
+    - Search library content.
+
+---
+
+## Technical Specifications
+
+### Version Control
+- **Git**:
+  - Use Git for version control to track changes and collaborate effectively.
+
+### APIs
+
+- **Gmail API**:
+  - Authenticate users via OAuth 2.0.
+  - Fetch emails (subject, sender, body).
+  - Apply labels to emails.
+  - Save drafts to Gmail.
+- **Anthropic Claude API**:
+  - Categorize emails.
+  - Draft responses using tailored prompts.
+
+### Libraries
+
+- **LangChain**:
+  - Enable semantic search for the knowledge library.
+- **Firebase Firestore**:
+  - Store user-defined rules and knowledge library content.
+  - Use encryption for stored messages to ensure data security.
+
+### Backend
+
+- **Node.js with Express.js**:
+  - Handle Gmail API and Claude API interactions.
+  - Manage rule application and library integration.
+
+### Frontend
+
+- **React.js** (optional) or plain HTML/JavaScript:
+  - Build the Chrome extension UI.
+  - Display settings and library management tools.
+
+### Chrome Extension
+
+- **Manifest V3**:
+  - Permissions for Gmail API and storage.
+  - Background scripts for periodic email categorization and response drafting.
+
+---
+
+## User Stories
+
+### Email Categorization
+
+1. As a user, I want the plugin to fetch new emails so that I don’t have to sort my inbox manually.
+2. As a user, I want to define rules for specific email types so that categorization aligns with my preferences.
+
+### Draft Response Generation
+
+1. As a user, I want the plugin to draft email responses so that I can save time replying to routine emails.
+2. As a user, I want the drafts to match my writing style so that they feel natural.
+
+### Writing Style Training
+
+1. As a user, I want the plugin to analyze my past emails so that it can accurately emulate my writing style.
+2. As a user, I want to review the style analysis so that I can make adjustments if needed.
+
+### Knowledge Library
+
+1. As a user, I want to store specific business knowledge in a library so that the plugin can draft informed responses.
+2. As a user, I want an update mechanism to ensure updates do not overwrite existing knowledge library entries or writing styles.
+3. As a user, I want to search and edit the library so that it stays up-to-date.
+
+### User Interface
+
+1. As a user, I want a dashboard to configure settings and view rules so that I can control the plugin’s behavior.
+2. As a user, I want user-friendly error messages that explain what went wrong and how to fix it.
+2. As a user, I want an intuitive library editor so that I can manage my knowledge base.
+
+---
+
+## Development Milestones
+
+1. **Gmail API Integration**
+   - Authenticate users.
+   - Fetch and label emails.
+   - Save drafts.
+2. **Anthropic Claude API Integration**
+   - Categorize emails using a base prompt.
+   - Draft email responses.
+3. **Knowledge Library Implementation**
+   - Create a storage system for knowledge entries.
+   - Implement semantic search.
+4. **User Interface Development**
+   - Build the dashboard and library editor.
+5. **Writing Style Training**
+   - Fetch past emails.
+   - Analyze and generate style guidelines.
+6. **Testing and Deployment**
+   - Test each module independently.
+   - Perform end-to-end testing.
+   - Package and publish the extension.
+
+---
+
+## Success Metrics
+
+## Error Handling
+1. **Error Categories**:
+   - **API Failures**: Handle Gmail API and Claude API timeouts, rate limits, or invalid responses.
+   - **User Input Errors**: Gracefully handle invalid or missing user inputs in rules and knowledge entries.
+   - **System Errors**: Manage crashes or unexpected failures during email fetching, labeling, or drafting.
+
+2. **Recovery Mechanisms**:
+   - Retry logic for transient API failures with exponential backoff.
+   - Display user-friendly error messages when an error occurs (e.g., "Failed to categorize email. Please check your network connection and try again.").
+   - Log errors with sufficient detail for troubleshooting (e.g., timestamps, error codes, and a brief context summary).
+
+3. **Notification**:
+   - Notify users of critical errors that require manual intervention, such as expired API tokens or missing configurations.
+
+## Detailed Logging for Troubleshooting
+1. **Logging Requirements**:
+   - Log every major action (e.g., email fetched, label applied, draft saved) with details including timestamps, action status, and related email IDs.
+   - Track errors separately, categorizing them by severity (e.g., info, warning, error).
+
+2. **Storage of Logs**:
+   - Use Firebase Firestore or a local logging framework to store logs for later analysis.
+
+3. **Debugging Tools**:
+   - Provide a simple interface for users to download logs for support or troubleshooting purposes.
+
+
+1. **Categorization Accuracy**: Percentage of emails correctly labeled.
+   - **Measurement**: Compare plugin labels to user feedback on whether emails were correctly categorized. Collect data via a feedback mechanism integrated into the plugin interface (e.g., "Was this categorization correct?").
+   - **Storage**: Store user feedback and categorization results in Firebase Firestore for analysis.
+
+2. **Draft Accuracy**: User satisfaction with draft tone, structure, and content.
+   - **Measurement**: Allow users to rate drafts with a simple scale (e.g., 1-5 stars) and provide optional comments.
+   - **Storage**: Save ratings and comments in Firebase Firestore, linked to specific drafts and emails for iterative improvements.
+
+3. **Knowledge Utilization**: Percentage of relevant drafts incorporating library data.
+   - **Measurement**: Track when the library is accessed during drafting and whether its data contributes to the final draft.
+   - **Storage**: Log library usage instances and draft content connections in Firestore.
+
+
+
+---
+
+## Your Instructions
+
+As you develop this project you will need to make decisions on libraries, environmental variables, and other technical decisions. Store those decisions in the decisions.md file.
