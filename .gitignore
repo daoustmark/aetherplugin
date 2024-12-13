@@ -1,7 +1,38 @@
+# Dependencies
 node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Environment variables and secrets
 .env
+.env.local
+.env.*.local
+firebase-key.json
 google-oauth.json
-*.log
-.DS_Store
-coverage/
+token.json
+
+# Build output
 dist/
+build/
+*.zip
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
